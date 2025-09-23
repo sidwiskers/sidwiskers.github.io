@@ -651,143 +651,242 @@
     </div>
     </div>
 
+    <!-- Audio Elements -->
+    <audio id="hoverSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBSuK2f" type="audio/wav">
+    </audio>
+    <audio id="clickSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBSuK2f" type="audio/wav">
+    </audio>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        // Audio Context for Sci-Fi Sounds
+        let audioContext;
+        
+        function initAudio() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+        }
+
+        // Generate Sci-Fi Sounds
+        function playHoverSound() {
+            if (!audioContext) return;
             
-            // --- Interactive Particle Background (same as before) ---
-            const canvas = document.getElementById('particle-canvas');
-            const ctx = canvas.getContext('2d');
-            let particles = [];
-            let mouse = { x: null, y: null, radius: 100 };
-
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
-
-            window.addEventListener('mousemove', (event) => { mouse.x = event.x; mouse.y = event.y; });
-            window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
-
-            class Particle {
-                constructor(x, y, dX, dY, size, color) {
-                    this.x = x; this.y = y; this.directionX = dX; this.directionY = dY; this.size = size; this.color = color;
-                }
-                draw() {
-                    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false); ctx.fillStyle = this.color; ctx.fill();
-                }
-                update() {
-                    if (this.x > canvas.width || this.x < 0) { this.directionX = -this.directionX; }
-                    if (this.y > canvas.height || this.y < 0) { this.directionY = -this.directionY; }
-                    let dx = mouse.x - this.x; let dy = mouse.y - this.y; let distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < mouse.radius + this.size) {
-                        if (mouse.x < this.x && this.x < canvas.width - this.size * 10) { this.x += 3; }
-                        if (mouse.x > this.x && this.x > this.size * 10) { this.x -= 3; }
-                        if (mouse.y < this.y && this.y < canvas.height - this.size * 10) { this.y += 3; }
-                        if (mouse.y > this.y && this.y > this.size * 10) { this.y -= 3; }
-                    }
-                    this.x += this.directionX; this.y += this.directionY; this.draw();
-                }
-            }
-
-            function initParticles() {
-                particles = [];
-                let num = (canvas.height * canvas.width) / 9000;
-                for (let i = 0; i < num; i++) {
-                    let size = (Math.random() * 2) + 1;
-                    let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-                    let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-                    let dX = (Math.random() * 0.4) - 0.2; let dY = (Math.random() * 0.4) - 0.2;
-                    let color = 'rgba(147, 51, 234, 0.4)';
-                    particles.push(new Particle(x, y, dX, dY, size, color));
-                }
-            }
-
-            function animateParticles() {
-                requestAnimationFrame(animateParticles); ctx.clearRect(0, 0, innerWidth, innerHeight);
-                for (let i = 0; i < particles.length; i++) { particles[i].update(); }
-                connectParticles();
-            }
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
             
-            function connectParticles() {
-                let opacity = 1;
-                for (let a = 0; a < particles.length; a++) {
-                    for (let b = a; b < particles.length; b++) {
-                        let distance = ((particles[a].x - particles[b].x) * (particles[a].x - particles[b].x)) + ((particles[a].y - particles[b].y) * (particles[a].y - particles[b].y));
-                        if (distance < (canvas.width / 7) * (canvas.height / 7)) {
-                            opacity = 1 - (distance / 20000);
-                            ctx.strokeStyle = `rgba(147, 51, 234, ${opacity * 0.3})`; ctx.lineWidth = 1;
-                            ctx.beginPath(); ctx.moveTo(particles[a].x, particles[a].y); ctx.lineTo(particles[b].x, particles[b].y); ctx.stroke();
-                        }
-                    }
-                }
-            }
-            initParticles(); animateParticles();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(1200, audioContext.currentTime + 0.1);
+            
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
 
-            // --- Name Scramble/Reveal Animation (same as before) ---
-            const nameTitle = document.getElementById('name-title'); const originalText = nameTitle.textContent;
-            const chars = '!<>-_\\/[]{}—=+*^?#_'; let frame; let frameRequest; let queue = [];
-            for (let i = 0; i < originalText.length; i++) {
-                const from = originalText[i]; const to = originalText[i]; const start = Math.floor(Math.random() * 40);
-                const end = start + Math.floor(Math.random() * 40); queue.push({ from, to, start, end, char: from });
-            }
-            nameTitle.textContent = ''; nameTitle.style.opacity = 1;
-            const updateName = () => {
-                let output = ''; let complete = 0;
-                for (let i = 0, n = queue.length; i < n; i++) {
-                    let { from, to, start, end, char } = queue[i];
-                    if (frame >= end) { complete++; output += to; } 
-                    else if (frame >= start) {
-                        if (!char || Math.random() < 0.28) { char = chars[Math.floor(Math.random() * chars.length)]; queue[i].char = char; }
-                        output += `<span class="animated-gradient-text">${char}</span>`;
-                    } else { output += from; }
-                }
-                nameTitle.innerHTML = output;
-                if (complete === queue.length) { cancelAnimationFrame(frameRequest); nameTitle.innerHTML = `<span class="animated-gradient-text">${originalText}</span>`; } 
-                else { frameRequest = requestAnimationFrame(updateName); frame++; }
-            };
-            setTimeout(() => { frame = 0; updateName(); }, 200);
+        function playClickSound() {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(1000, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(500, audioContext.currentTime + 0.2);
+            
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.2);
+        }
 
-            // --- NEW: 3D Tilt Effect for Cards ---
-            const tiltElements = document.querySelectorAll("[data-tilt]");
-            const tiltConfig = { max: 15, perspective: 1000, scale: 1.05, speed: 500, easing: "cubic-bezier(.03,.98,.52,.99)" };
-
-            tiltElements.forEach(element => {
-                element.addEventListener("mousemove", (e) => {
-                    const rect = element.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const { width, height } = rect;
-                    const rotateX = tiltConfig.max * ((y - height / 2) / (height / 2)) * -1;
-                    const rotateY = tiltConfig.max * ((x - width / 2) / (width / 2));
-                    
-                    element.style.transition = `transform ${tiltConfig.speed / 2}ms linear`;
-                    element.style.transform = `perspective(${tiltConfig.perspective}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(${tiltConfig.scale}, ${tiltConfig.scale}, ${tiltConfig.scale})`;
-                });
-
-                element.addEventListener("mouseleave", () => {
-                    element.style.transition = `transform ${tiltConfig.speed}ms ${tiltConfig.easing}`;
-                    element.style.transform = `perspective(${tiltConfig.perspective}px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-                });
-            });
-
-            // --- NEW: Scroll Reveal Animation ---
-            function reveal() {
-                const reveals = document.querySelectorAll(".reveal");
-                for (let i = 0; i < reveals.length; i++) {
-                    const windowHeight = window.innerHeight;
-                    const elementTop = reveals[i].getBoundingClientRect().top;
-                    const elementVisible = 100; // Distance from bottom to trigger
-                    if (elementTop < windowHeight - elementVisible) {
-                        reveals[i].classList.add("active");
-                    }
-                }
-            }
-            window.addEventListener("scroll", reveal);
-            // Initial check on load
-            reveal();
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
         });
+
+        // Matrix Digital Rain
+        const matrixCanvas = document.getElementById('matrixCanvas');
+        const matrixCtx = matrixCanvas.getContext('2d');
+
+        matrixCanvas.width = window.innerWidth;
+        matrixCanvas.height = window.innerHeight;
+
+        const matrixChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}';
+        const matrixCharArray = matrixChars.split('');
+
+        const fontSize = 10;
+        const columns = matrixCanvas.width / fontSize;
+
+        const drops = [];
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        function drawMatrix() {
+            matrixCtx.fillStyle = 'rgba(5, 5, 7, 0.04)';
+            matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+            matrixCtx.fillStyle = '#0F3';
+            matrixCtx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrixCharArray[Math.floor(Math.random() * matrixCharArray.length)];
+                matrixCtx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 35);
+
+        // Window resize handler
+        window.addEventListener('resize', () => {
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
+        });
+
+        // Loading Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                }, 500);
+            }, 3000);
+        });
+
+        // Terminal Interface
+        const terminalToggle = document.getElementById('terminalToggle');
+        const terminalInterface = document.getElementById('terminalInterface');
+        const terminalClose = document.getElementById('terminalClose');
+        const terminalContent = document.getElementById('terminalContent');
+
+        let terminalOpen = false;
+
+        terminalToggle.addEventListener('click', () => {
+            playClickSound();
+            terminalOpen = !terminalOpen;
+            terminalInterface.classList.toggle('hidden');
+            
+            if (terminalOpen) {
+                // Simulate terminal activity
+                setTimeout(() => {
+                    const newLine = document.createElement('div');
+                    newLine.innerHTML = '<span class="text-yellow-400">λ</span> neural_scan --depth=max';
+                    terminalContent.appendChild(newLine);
+                }, 1000);
+                
+                setTimeout(() => {
+                    const newLine = document.createElement('div');
+                    newLine.innerHTML = '<span class="text-green-400">[SCAN]</span> Detecting 7 active projects...';
+                    terminalContent.appendChild(newLine);
+                }, 2000);
+                
+                setTimeout(() => {
+                    const newLine = document.createElement('div');
+                    newLine.innerHTML = '<span class="text-blue-400">[AI]</span> All systems operational. Ready for interaction.';
+                    terminalContent.appendChild(newLine);
+                }, 3000);
+            }
+        });
+
+        terminalClose.addEventListener('click', () => {
+            playClickSound();
+            terminalOpen = false;
+            terminalInterface.classList.add('hidden');
+        });
+
+        // Enhanced Hover Effects with Sound
+        document.querySelectorAll('.cyber-card, .neon-btn').forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                playHoverSound();
+            });
+            
+            element.addEventListener('click', () => {
+                playClickSound();
+            });
+        });
+
+        // 3D Tilt Effect
+        document.querySelectorAll('[data-tilt]').forEach(element => {
+            element.addEventListener('mousemove', (e) => {
+                const rect = element.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / centerY * -10;
+                const rotateY = (x - centerX) / centerX * 10;
+                
+                element.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                element.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+            });
+        });
+
+        // Initialize audio on first user interaction
+        document.addEventListener('click', initAudio, { once: true });
+        document.addEventListener('keydown', initAudio, { once: true });
+
+        // Glitch text effect for project titles
+        document.querySelectorAll('.glitch').forEach(element => {
+            setInterval(() => {
+                if (Math.random() > 0.95) {
+                    element.style.transform = `translate(${Math.random() * 2 - 1}px, ${Math.random() * 2 - 1}px)`;
+                    setTimeout(() => {
+                        element.style.transform = 'translate(0px, 0px)';
+                    }, 100);
+                }
+            }, 100);
+        });
+
+        // Dynamic text updates
+        setInterval(() => {
+            const stats = document.querySelectorAll('[data-testid^="stats-"]');
+            stats.forEach(stat => {
+                const number = stat.querySelector('.holo-text');
+                if (Math.random() > 0.98) {
+                    const current = parseInt(number.textContent);
+                    number.textContent = (current + Math.floor(Math.random() * 5)) + '+';
+                }
+            });
+        }, 5000);
+
+        // Console Easter Egg
+        console.log(`
+        ╔═══════════════════════════════════════╗
+        ║           CYBERNET ACCESS             ║
+        ║         LastLife Portfolio v2.1       ║
+        ║                                       ║
+        ║  [●] Neural networks: ONLINE          ║
+        ║  [●] Holo-display: ACTIVE            ║
+        ║  [●] AI assistance: READY            ║
+        ║                                       ║
+        ║  Welcome to the digital frontier...   ║
+        ╚═══════════════════════════════════════╝
+        `);
     </script>
 </body>
 </html>
