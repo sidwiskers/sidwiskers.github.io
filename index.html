@@ -405,31 +405,98 @@
         }
     </style>
 </head>
-<body class="antialiased">
+<body>
+    <!-- Custom Cursor -->
+    <div class="cyber-cursor" id="cursor"></div>
 
-    <!-- The interactive particle background will be rendered here -->
-    <canvas id="particle-canvas"></canvas>
+    <!-- Loading Screen -->
+    <div class="loading-container" id="loadingScreen">
+        <div class="loading-text holo-text">INITIALIZING CYBERNET...</div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+        <div class="mt-4 text-center">
+            <div class="typewriter text-sm">LOADING NEURAL INTERFACE...</div>
+        </div>
+    </div>
 
-    <div class="relative min-h-screen w-full p-4 sm:p-6 lg:p-8 flex flex-col items-center justify-center">
+    <!-- Matrix Background -->
+    <canvas class="matrix-bg" id="matrixCanvas"></canvas>
+
+    <!-- Scan Lines -->
+    <div class="scan-lines"></div>
+
+    <!-- CRT Overlay -->
+    <div class="crt-overlay"></div>
+
+    <!-- Main Content -->
+    <div class="relative min-h-screen w-full p-4 sm:p-6 lg:p-8">
         
-        <!-- Main Content Wrapper -->
-        <div class="w-full max-w-5xl mx-auto">
-            <!-- Header Section -->
-            <header class="text-center pt-20 pb-12">
-                <h1 id="name-title" class="text-6xl md:text-8xl font-black tracking-tighter mb-4 opacity-0">
-                    LastLife
-                </h1>
-                <p class="text-xl md:text-2xl text-gray-300 font-light fade-in-down delay-1">
-                Curious Human  <span class="text-cyan-400 mx-2">
-                </p>
-            </header>
+        <!-- Navigation -->
+        <nav class="fixed top-4 right-4 z-50">
+            <button class="neon-btn" id="terminalToggle" data-testid="terminal-toggle">
+                TERMINAL
+            </button>
+        </nav>
 
-            <!-- Bio Section -->
-            <section class="max-w-3xl text-center my-8 mx-auto fade-in-down delay-2">
-                 <p class="text-lg text-gray-400 leading-relaxed">
-                    Bunch of Telegram Bots and Games with a few Services
-                </p>
-            </section>
+        <!-- Terminal Interface -->
+        <div class="terminal fixed top-20 right-4 w-96 z-40 hidden" id="terminalInterface" data-testid="terminal-interface">
+            <div class="terminal-header">
+                <span>CYBER_TERMINAL_v2.1</span>
+                <button class="text-xs hover:text-red-400" id="terminalClose">✕</button>
+            </div>
+            <div class="terminal-content" id="terminalContent">
+                <div class="mb-2">
+                    <span class="text-yellow-400">λ</span> system_status
+                </div>
+                <div class="mb-2">
+                    <span class="text-green-400">[OK]</span> Neural networks online
+                </div>
+                <div class="mb-2">
+                    <span class="text-green-400">[OK]</span> Holographic display active
+                </div>
+                <div class="mb-2">
+                    <span class="text-green-400">[OK]</span> AI assistance ready
+                </div>
+                <div class="mb-4">
+                    <span class="text-blue-400">[INFO]</span> Welcome to LastLife's domain
+                </div>
+                <div class="typewriter" style="animation-delay: 2s;">
+                    Type 'help' for available commands...
+                </div>
+            </div>
+        </div>
+
+        <!-- Header Section -->
+        <header class="text-center pt-20 pb-16 relative z-10">
+            <h1 class="holo-text text-8xl md:text-9xl font-black tracking-tighter mb-6 glitch" data-text="LastLife" data-testid="main-title">
+                LastLife
+            </h1>
+            <div class="text-2xl md:text-3xl font-light mb-4">
+                <span class="text-gray-300">Cyberpunk</span>
+                <span class="text-neon-pink mx-3">×</span>
+                <span class="text-neon-blue">Creator</span>
+            </div>
+            <div class="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                <span class="typewriter">Architect of digital realms • Neural network enthusiast • Bot whisperer</span>
+            </div>
+        </header>
+
+        <!-- Stats Panel -->
+        <section class="max-w-4xl mx-auto mb-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="cyber-card rounded-lg p-6 text-center" data-testid="stats-projects">
+                <div class="text-4xl font-bold holo-text mb-2">7+</div>
+                <div class="text-gray-300">Digital Creations</div>
+            </div>
+            <div class="cyber-card rounded-lg p-6 text-center" data-testid="stats-users">
+                <div class="text-4xl font-bold holo-text mb-2">10K+</div>
+                <div class="text-gray-300">Active Users</div>
+            </div>
+            <div class="cyber-card rounded-lg p-6 text-center" data-testid="stats-uptime">
+                <div class="text-4xl font-bold holo-text mb-2">99.9%</div>
+                <div class="text-gray-300">System Uptime</div>
+            </div>
+        </section>
 
             <!-- Projects Section -->
             <main class="w-full mx-auto my-16">
