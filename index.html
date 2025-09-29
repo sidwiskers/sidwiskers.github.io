@@ -44,40 +44,56 @@
             100% { background-position: 0% 50%; }
         }
         
-        /* Glassmorphism Card Style with 3D Tilt */
+        /* Glassmorphism Card Style with Enhanced 3D Tilt and Glow */
         .glass-card {
             background: rgba(17, 13, 29, 0.5);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.2s ease-out;
-            will-change: transform; /* Performance optimization for animations */
-            transform-style: preserve-3d; /* Necessary for 3D transforms */
+            transition: all 0.3s ease-out;
+            will-change: transform, box-shadow; /* Optimized for animations */
+            transform-style: preserve-3d; /* For 3D transforms */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
-        /* Entrance Animations */
+        .glass-card:hover {
+            box-shadow: 0 8px 40px rgba(147, 51, 234, 0.3); /* Add glow on hover */
+        }
+
+        /* Enhanced Entrance Animations with Scale and Blur */
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(-30px) scale(0.95); filter: blur(5px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
         .fade-in-down {
             opacity: 0;
-            animation: fadeInDown 0.8s ease-out forwards;
+            animation: fadeInDown 1s ease-out forwards;
         }
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
+        .delay-1 { animation-delay: 0.3s; }
+        .delay-2 { animation-delay: 0.6s; }
 
-        /* Scroll Reveal Animations */
+        /* Enhanced Scroll Reveal Animations with Bounce */
         .reveal {
             position: relative;
             opacity: 0;
-            transform: translateY(100px);
-            transition: opacity 1s ease, transform 1s ease;
+            transform: translateY(100px) scale(0.95);
+            transition: opacity 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bounce effect */
         }
         .reveal.active {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
+        }
+
+        /* Button Pulse Animation */
+        .pulse-button {
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(147, 51, 234, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(147, 51, 234, 0); }
         }
 
     </style>
@@ -121,7 +137,7 @@
                         </div>
                         <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">Fryday</h3>
                         <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">Human alike Chatbot, you may like her</p>
-                        <a href="https://t.me/frydayybot" target="_blank" class="w-full text-center font-semibold bg-pink-500 text-black py-2 rounded-lg hover:bg-pink-400 transition-colors transform-gpu" style="transform: translateZ(10px);">Chat Now</a>
+                        <a href="https://t.me/frydayybot" target="_blank" class="w-full text-center font-semibold bg-pink-500 text-black py-2 rounded-lg hover:bg-pink-400 transition-colors transform-gpu pulse-button" style="transform: translateZ(10px);">Chat Now</a>
                     </div>
 
                     <!-- Project Card 2: SwitchGlitchBot -->
@@ -131,7 +147,7 @@
                         </div>
                         <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">Switch Glitch</h3>
                         <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);"> Just a "match the block" Game </p>
-                        <a href="https://t.me/SwitchGlitchBot" target="_blank" class="w-full text-center font-semibold bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-400 transition-colors transform-gpu" style="transform: translateZ(10px);">Play Game</a>
+                        <a href="https://t.me/SwitchGlitchBot" target="_blank" class="w-full text-center font-semibold bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-400 transition-colors transform-gpu pulse-button" style="transform: translateZ(10px);">Play Game</a>
                     </div>
 
                     <!-- Project Card 3: DeadDropDecoy -->
@@ -141,7 +157,7 @@
                         </div>
                         <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">The Insider</h3>
                         <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">A "Who's the spy" type game </p>
-                        <a href="https://t.me/ThisInsiderBot" target="_blank" class="w-full text-center font-semibold bg-teal-500 text-white py-2 rounded-lg hover:bg-teal-400 transition-colors transform-gpu" style="transform: translateZ(10px);">Uncover Spy</a>
+                        <a href="https://t.me/ThisInsiderBot" target="_blank" class="w-full text-center font-semibold bg-teal-500 text-white py-2 rounded-lg hover:bg-teal-400 transition-colors transform-gpu pulse-button" style="transform: translateZ(10px);">Uncover Spy</a>
                     </div>
 
                     <!-- Project Card 4: MineSweeper -->
@@ -151,7 +167,7 @@
                         </div>
                         <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">MineSweeper</h3>
                         <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">A minimal quick MineSweeper game</p>
-                        <a href="https://t.me/MineSweepersBot" target="_blank" class="w-full text-center font-semibold bg-green-500 text-black py-2 rounded-lg hover:bg-green-400 transition-colors transform-gpu" style="transform: translateZ(10px);">Play Game</a>
+                        <a href="https://t.me/MineSweepersBot" target="_blank" class="w-full text-center font-semibold bg-green-500 text-black py-2 rounded-lg hover:bg-green-400 transition-colors transform-gpu pulse-button" style="transform: translateZ(10px);">Play Game</a>
                     </div>
 
                     <!-- Project Card 5: Sentinel -->
@@ -161,7 +177,7 @@
                         </div>
                         <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">Sentinel</h3>
                         <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">Telegram Moderation Bot</p>
-                        <a href="https://t.me/PaceSetterBot" target="_blank" class="w-full text-center font-semibold bg-red-500 text-black py-2 rounded-lg hover:bg-red-400 transition-colors transform-gpu" style="transform: translateZ(10px);">Add to Group</a>
+                        <a href="https://t.me/PaceSetterBot" target="_blank" class="w-full text-center font-semibold bg-red-500 text-black py-2 rounded-lg hover:bg-red-400 transition-colors transform-gpu pulse-button" style="transform: translateZ(10px);">Add to Group</a>
                     </div>
 
                     <!-- Project Card 6: Byte -->
@@ -171,7 +187,7 @@
                         </div>
                         <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">Byte</h3>
                         <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">My personal Sidekick, quite Introverted to reply</p>
-                        <a href="https://t.me/BytasticBot" target="_blank" class="w-full text-center font-semibold bg-yellow-500 text-black py-2 rounded-lg hover:bg-yellow-400 transition-colors transform-gpu" style="transform: translateZ(10px);">Chat Now</a>
+                        <a href="https://t.me/BytasticBot" target="_blank" class="w-full text-center font-semibold bg-yellow-500 text-black py-2 rounded-lg hover:bg-yellow-400 transition-colors transform-gpu pulse-button" style="transform: translateZ(10px);">Chat Now</a>
                     </div>
 
                     <!-- Project Card 7: Snatcher -->
@@ -181,7 +197,7 @@
                         </div>
                         <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">Snatcher</h3>
                         <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">A web utility to instantly extract sticker IDs from Telegram sticker packs in Batch</p>
-                        <a href="http://snatcher-v2-j1xd.vercel.app" target="_blank" class="w-full max-w-xs text-center font-semibold bg-violet-500 text-white py-2 rounded-lg hover:bg-violet-400 transition-colors transform-gpu" style="transform: translateZ(10px);">Visit Tool</a>
+                        <a href="http://snatcher-v2-j1xd.vercel.app" target="_blank" class="w-full max-w-xs text-center font-semibold bg-violet-500 text-white py-2 rounded-lg hover:bg-violet-400 transition-colors transform-gpu pulse-button" style="transform: translateZ(10px);">Visit Tool</a>
                     </div>
                 </div>
             </main>
@@ -190,7 +206,7 @@
             <footer class="text-center mt-16 mb-8 reveal">
                 <h3 class="text-2xl font-bold mb-4">Let's Connect</h3>
                 <p class="text-gray-400 mb-6 max-w-md mx-auto">Have an idea, a question, or just want to say hello? Reach out on Telegram.</p>
-                <a href="https://t.me/sidwiskers" target="_blank" class="inline-block bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-lg hover:shadow-blue-500/40 transition-all duration-300 transform hover:scale-105">
+                <a href="https://t.me/sidwiskers" target="_blank" class="inline-block bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-lg hover:shadow-blue-500/40 transition-all duration-300 transform hover:scale-105 pulse-button">
                     Message LastLife
                 </a>
             </footer>
@@ -200,11 +216,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             
-            // --- Interactive Particle Background (same as before) ---
+            // --- Enhanced Interactive Particle Background: More particles, smoother connections, color variation ---
             const canvas = document.getElementById('particle-canvas');
             const ctx = canvas.getContext('2d');
             let particles = [];
-            let mouse = { x: null, y: null, radius: 100 };
+            let mouse = { x: null, y: null, radius: 120 }; // Increased radius for stronger interaction
 
             function resizeCanvas() {
                 canvas.width = window.innerWidth;
@@ -219,6 +235,7 @@
             class Particle {
                 constructor(x, y, dX, dY, size, color) {
                     this.x = x; this.y = y; this.directionX = dX; this.directionY = dY; this.size = size; this.color = color;
+                    this.baseColor = color; // For color shifting
                 }
                 draw() {
                     ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false); ctx.fillStyle = this.color; ctx.fill();
@@ -228,10 +245,14 @@
                     if (this.y > canvas.height || this.y < 0) { this.directionY = -this.directionY; }
                     let dx = mouse.x - this.x; let dy = mouse.y - this.y; let distance = Math.sqrt(dx * dx + dy * dy);
                     if (distance < mouse.radius + this.size) {
-                        if (mouse.x < this.x && this.x < canvas.width - this.size * 10) { this.x += 3; }
-                        if (mouse.x > this.x && this.x > this.size * 10) { this.x -= 3; }
-                        if (mouse.y < this.y && this.y < canvas.height - this.size * 10) { this.y += 3; }
-                        if (mouse.y > this.y && this.y > this.size * 10) { this.y -= 3; }
+                        if (mouse.x < this.x && this.x < canvas.width - this.size * 10) { this.x += 4; } // Faster repulsion
+                        if (mouse.x > this.x && this.x > this.size * 10) { this.x -= 4; }
+                        if (mouse.y < this.y && this.y < canvas.height - this.size * 10) { this.y += 4; }
+                        if (mouse.y > this.y && this.y > this.size * 10) { this.y -= 4; }
+                        // Color shift on interaction
+                        this.color = 'rgba(59, 130, 246, 0.6)'; // Shift to blue on hover
+                    } else {
+                        this.color = this.baseColor; // Reset to original
                     }
                     this.x += this.directionX; this.y += this.directionY; this.draw();
                 }
@@ -239,13 +260,14 @@
 
             function initParticles() {
                 particles = [];
-                let num = (canvas.height * canvas.width) / 9000;
+                let num = (canvas.height * canvas.width) / 6000; // More particles for denser field
                 for (let i = 0; i < num; i++) {
-                    let size = (Math.random() * 2) + 1;
+                    let size = (Math.random() * 3) + 1; // Slightly larger particles
                     let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
                     let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-                    let dX = (Math.random() * 0.4) - 0.2; let dY = (Math.random() * 0.4) - 0.2;
-                    let color = 'rgba(147, 51, 234, 0.4)';
+                    let dX = (Math.random() * 0.6) - 0.3; // Faster movement
+                    let dY = (Math.random() * 0.6) - 0.3;
+                    let color = `rgba(${Math.floor(Math.random() * 100 + 100)}, 51, 234, 0.4)`; // Vary purple shades
                     particles.push(new Particle(x, y, dX, dY, size, color));
                 }
             }
@@ -261,9 +283,9 @@
                 for (let a = 0; a < particles.length; a++) {
                     for (let b = a; b < particles.length; b++) {
                         let distance = ((particles[a].x - particles[b].x) * (particles[a].x - particles[b].x)) + ((particles[a].y - particles[b].y) * (particles[a].y - particles[b].y));
-                        if (distance < (canvas.width / 7) * (canvas.height / 7)) {
-                            opacity = 1 - (distance / 20000);
-                            ctx.strokeStyle = `rgba(147, 51, 234, ${opacity * 0.3})`; ctx.lineWidth = 1;
+                        if (distance < (canvas.width / 6) * (canvas.height / 6)) { // Wider connection range
+                            opacity = 1 - (distance / 15000); // Softer fade
+                            ctx.strokeStyle = `rgba(147, 51, 234, ${opacity * 0.4})`; ctx.lineWidth = 1.5; // Thicker lines
                             ctx.beginPath(); ctx.moveTo(particles[a].x, particles[a].y); ctx.lineTo(particles[b].x, particles[b].y); ctx.stroke();
                         }
                     }
@@ -271,12 +293,13 @@
             }
             initParticles(); animateParticles();
 
-            // --- Name Scramble/Reveal Animation (same as before) ---
+            // --- Enhanced Name Scramble/Reveal Animation: Slower scramble, more characters, smoother transition ---
             const nameTitle = document.getElementById('name-title'); const originalText = nameTitle.textContent;
-            const chars = '!<>-_\\/[]{}—=+*^?#_'; let frame; let frameRequest; let queue = [];
+            const chars = '!<>-_\\/[]{}—=+*^?#_@&%'; // More characters for variety
+            let frame; let frameRequest; let queue = [];
             for (let i = 0; i < originalText.length; i++) {
-                const from = originalText[i]; const to = originalText[i]; const start = Math.floor(Math.random() * 40);
-                const end = start + Math.floor(Math.random() * 40); queue.push({ from, to, start, end, char: from });
+                const from = originalText[i]; const to = originalText[i]; const start = Math.floor(Math.random() * 60); // Longer delay range
+                const end = start + Math.floor(Math.random() * 60); queue.push({ from, to, start, end, char: from });
             }
             nameTitle.textContent = ''; nameTitle.style.opacity = 1;
             const updateName = () => {
@@ -285,19 +308,38 @@
                     let { from, to, start, end, char } = queue[i];
                     if (frame >= end) { complete++; output += to; } 
                     else if (frame >= start) {
-                        if (!char || Math.random() < 0.28) { char = chars[Math.floor(Math.random() * chars.length)]; queue[i].char = char; }
+                        if (!char || Math.random() < 0.2) { // Slower change rate
+                            char = chars[Math.floor(Math.random() * chars.length)]; queue[i].char = char;
+                        }
                         output += `<span class="animated-gradient-text">${char}</span>`;
                     } else { output += from; }
                 }
                 nameTitle.innerHTML = output;
-                if (complete === queue.length) { cancelAnimationFrame(frameRequest); nameTitle.innerHTML = `<span class="animated-gradient-text">${originalText}</span>`; } 
-                else { frameRequest = requestAnimationFrame(updateName); frame++; }
+                if (complete === queue.length) { 
+                    cancelAnimationFrame(frameRequest); 
+                    nameTitle.innerHTML = `<span class="animated-gradient-text">${originalText}</span>`; 
+                    // Add bounce effect after reveal
+                    nameTitle.style.animation = 'bounceIn 0.5s ease-out';
+                } else { 
+                    frameRequest = requestAnimationFrame(updateName); frame++; 
+                }
             };
             setTimeout(() => { frame = 0; updateName(); }, 200);
 
-            // --- NEW: 3D Tilt Effect for Cards ---
+            // Add bounce keyframe
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes bounceIn {
+                    0% { transform: scale(0.9); }
+                    50% { transform: scale(1.05); }
+                    100% { transform: scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // --- Enhanced 3D Tilt Effect for Cards: Smoother, with inner element translation ---
             const tiltElements = document.querySelectorAll("[data-tilt]");
-            const tiltConfig = { max: 15, perspective: 1000, scale: 1.05, speed: 500, easing: "cubic-bezier(.03,.98,.52,.99)" };
+            const tiltConfig = { max: 20, perspective: 1200, scale: 1.08, speed: 600, easing: "cubic-bezier(.03,.98,.52,.99)" }; // Increased values for more pronounced effect
 
             tiltElements.forEach(element => {
                 element.addEventListener("mousemove", (e) => {
@@ -310,27 +352,46 @@
                     
                     element.style.transition = `transform ${tiltConfig.speed / 2}ms linear`;
                     element.style.transform = `perspective(${tiltConfig.perspective}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(${tiltConfig.scale}, ${tiltConfig.scale}, ${tiltConfig.scale})`;
+                    
+                    // Translate inner elements for parallax
+                    const innerElements = element.querySelectorAll('.transform-gpu');
+                    innerElements.forEach(inner => {
+                        const depth = parseInt(inner.style.transform.match(/translateZ\((\d+)px\)/)?.[1] || 0);
+                        inner.style.transform = `translateZ(${depth}px) translate(${rotateY / 2}px, ${rotateX / 2}px)`;
+                    });
                 });
 
                 element.addEventListener("mouseleave", () => {
                     element.style.transition = `transform ${tiltConfig.speed}ms ${tiltConfig.easing}`;
                     element.style.transform = `perspective(${tiltConfig.perspective}px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                    
+                    // Reset inner elements
+                    const innerElements = element.querySelectorAll('.transform-gpu');
+                    innerElements.forEach(inner => {
+                        const depth = parseInt(inner.style.transform.match(/translateZ\((\d+)px\)/)?.[1] || 0);
+                        inner.style.transform = `translateZ(${depth}px) translate(0px, 0px)`;
+                    });
                 });
             });
 
-            // --- NEW: Scroll Reveal Animation ---
+            // --- Enhanced Scroll Reveal Animation: With debounce for performance ---
             function reveal() {
                 const reveals = document.querySelectorAll(".reveal");
                 for (let i = 0; i < reveals.length; i++) {
                     const windowHeight = window.innerHeight;
                     const elementTop = reveals[i].getBoundingClientRect().top;
-                    const elementVisible = 100; // Distance from bottom to trigger
+                    const elementVisible = 150; // Adjusted trigger point
                     if (elementTop < windowHeight - elementVisible) {
                         reveals[i].classList.add("active");
                     }
                 }
             }
-            window.addEventListener("scroll", reveal);
+            // Debounce scroll event for better performance
+            let timeout;
+            window.addEventListener("scroll", () => {
+                clearTimeout(timeout);
+                timeout = setTimeout(reveal, 50);
+            });
             // Initial check on load
             reveal();
         });
