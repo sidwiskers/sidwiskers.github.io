@@ -88,12 +88,52 @@
         /* Button Pulse Animation */
         .pulse-button {
             animation: pulse 2s infinite ease-in-out;
+            position: relative;
+            overflow: hidden; /* For ripple effect */
         }
 
         @keyframes pulse {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.7); }
             70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(147, 51, 234, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(147, 51, 234, 0); }
+        }
+
+        /* Innovative Ripple Effect on Click */
+        .ripple:active::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.6);
+            opacity: 0;
+            border-radius: 50%;
+            transform: scale(1) translate(-50%, -50%);
+            animation: ripple-effect 0.6s linear;
+        }
+
+        @keyframes ripple-effect {
+            to {
+                transform: scale(100) translate(-50%, -50%);
+                opacity: 0;
+            }
+        }
+
+        /* Quick Sparkle Burst on Click (Innovative Addition) */
+        @keyframes sparkle-burst {
+            0% { opacity: 1; transform: scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: scale(1.5) rotate(180deg); }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkle-burst 0.5s ease-out forwards;
         }
 
     </style>
@@ -137,7 +177,7 @@
                         </div>
                         <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">Fryday</h3>
                         <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">Human alike Chatbot, you may like her</p>
-                        <a href="https://t.me/frydayybot" target="_blank" class="w-full text-center font-semibold bg-pink-500 text-black py-2 rounded-lg hover:bg-pink-400 transition-colors transform-gpu pulse-button" style="transform: translateZ(10px);">Chat Now</a>
+                        <a href="https://t.me/frydayybot" target="_blank" class="w-full text-center font-semibold bg-pink-500 text-black py-2 rounded-lg hover:bg-pink-400 transition-colors transform-gpu pulse-button ripple" style="transform: translateZ(10px);">Chat Now</a>
                     </div>
 
                     <!-- Project Card 2: SwitchGlitchBot -->
@@ -147,7 +187,7 @@
                         </div>
                         <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">Switch Glitch</h3>
                         <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);"> Just a "match the block" Game </p>
-                        <a href="https://t.me/SwitchGlitchBot" target="_blank" class="w-full text-center font-semibold bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-400 transition-colors transform-gpu pulse-button" style="transform: translateZ(10px);">Play Game</a>
+                        <a href="https://t.me/SwitchGlitchBot" target="_blank" class="w-full text-center font-semibold bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-400 transition-colors transform-gpu pulse-button ripple" style="transform: translateZ(10px);">Play Game</a>
                     </div>
 
                     <!-- Project Card 3: DeadDropDecoy -->
@@ -157,7 +197,7 @@
                         </div>
                         <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">The Insider</h3>
                         <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">A "Who's the spy" type game </p>
-                        <a href="https://t.me/ThisInsiderBot" target="_blank" class="w-full text-center font-semibold bg-teal-500 text-white py-2 rounded-lg hover:bg-teal-400 transition-colors transform-gpu pulse-button" style="transform: translateZ(10px);">Uncover Spy</a>
+                        <a href="https://t.me/ThisInsiderBot" target="_blank" class="w-full text-center font-semibold bg-teal-500 text-white py-2 rounded-lg hover:bg-teal-400 transition-colors transform-gpu pulse-button ripple" style="transform: translateZ(10px);">Uncover Spy</a>
                     </div>
 
                     <!-- Project Card 4: MineSweeper -->
@@ -167,7 +207,7 @@
                         </div>
                         <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">MineSweeper</h3>
                         <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">A minimal quick MineSweeper game</p>
-                        <a href="https://t.me/MineSweepersBot" target="_blank" class="w-full text-center font-semibold bg-green-500 text-black py-2 rounded-lg hover:bg-green-400 transition-colors transform-gpu pulse-button" style="transform: translateZ(10px);">Play Game</a>
+                        <a href="https://t.me/MineSweepersBot" target="_blank" class="w-full text-center font-semibold bg-green-500 text-black py-2 rounded-lg hover:bg-green-400 transition-colors transform-gpu pulse-button ripple" style="transform: translateZ(10px);">Play Game</a>
                     </div>
 
                     <!-- Project Card 5: Sentinel -->
@@ -177,7 +217,7 @@
                         </div>
                         <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">Sentinel</h3>
                         <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">Telegram Moderation Bot</p>
-                        <a href="https://t.me/PaceSetterBot" target="_blank" class="w-full text-center font-semibold bg-red-500 text-black py-2 rounded-lg hover:bg-red-400 transition-colors transform-gpu pulse-button" style="transform: translateZ(10px);">Add to Group</a>
+                        <a href="https://t.me/PaceSetterBot" target="_blank" class="w-full text-center font-semibold bg-red-500 text-black py-2 rounded-lg hover:bg-red-400 transition-colors transform-gpu pulse-button ripple" style="transform: translateZ(10px);">Add to Group</a>
                     </div>
 
                     <!-- Project Card 6: Byte -->
@@ -187,7 +227,7 @@
                         </div>
                         <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">Byte</h3>
                         <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">My personal Sidekick, quite Introverted to reply</p>
-                        <a href="https://t.me/BytasticBot" target="_blank" class="w-full text-center font-semibold bg-yellow-500 text-black py-2 rounded-lg hover:bg-yellow-400 transition-colors transform-gpu pulse-button" style="transform: translateZ(10px);">Chat Now</a>
+                        <a href="https://t.me/BytasticBot" target="_blank" class="w-full text-center font-semibold bg-yellow-500 text-black py-2 rounded-lg hover:bg-yellow-400 transition-colors transform-gpu pulse-button ripple" style="transform: translateZ(10px);">Chat Now</a>
                     </div>
 
                     <!-- Project Card 7: Snatcher -->
@@ -197,7 +237,7 @@
                         </div>
                         <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">Snatcher</h3>
                         <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">A web utility to instantly extract sticker IDs from Telegram sticker packs in Batch</p>
-                        <a href="http://snatcher-v2-j1xd.vercel.app" target="_blank" class="w-full max-w-xs text-center font-semibold bg-violet-500 text-white py-2 rounded-lg hover:bg-violet-400 transition-colors transform-gpu pulse-button" style="transform: translateZ(10px);">Visit Tool</a>
+                        <a href="http://snatcher-v2-j1xd.vercel.app" target="_blank" class="w-full max-w-xs text-center font-semibold bg-violet-500 text-white py-2 rounded-lg hover:bg-violet-400 transition-colors transform-gpu pulse-button ripple" style="transform: translateZ(10px);">Visit Tool</a>
                     </div>
                 </div>
             </main>
@@ -206,7 +246,7 @@
             <footer class="text-center mt-16 mb-8 reveal">
                 <h3 class="text-2xl font-bold mb-4">Let's Connect</h3>
                 <p class="text-gray-400 mb-6 max-w-md mx-auto">Have an idea, a question, or just want to say hello? Reach out on Telegram.</p>
-                <a href="https://t.me/sidwiskers" target="_blank" class="inline-block bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-lg hover:shadow-blue-500/40 transition-all duration-300 transform hover:scale-105 pulse-button">
+                <a href="https://t.me/sidwiskers" target="_blank" class="inline-block bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-lg hover:shadow-blue-500/40 transition-all duration-300 transform hover:scale-105 pulse-button ripple">
                     Message LastLife
                 </a>
             </footer>
@@ -371,6 +411,46 @@
                         const depth = parseInt(inner.style.transform.match(/translateZ\((\d+)px\)/)?.[1] || 0);
                         inner.style.transform = `translateZ(${depth}px) translate(0px, 0px)`;
                     });
+                });
+            });
+
+            // --- Reset Tilt on Scroll (Debounced) ---
+            function resetTilts() {
+                tiltElements.forEach(element => {
+                    element.style.transition = `transform ${tiltConfig.speed}ms ${tiltConfig.easing}`;
+                    element.style.transform = `perspective(${tiltConfig.perspective}px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                    
+                    const innerElements = element.querySelectorAll('.transform-gpu');
+                    innerElements.forEach(inner => {
+                        const depth = parseInt(inner.style.transform.match(/translateZ\((\d+)px\)/)?.[1] || 0);
+                        inner.style.transform = `translateZ(${depth}px) translate(0px, 0px)`;
+                    });
+                });
+            }
+
+            let scrollTimeout;
+            window.addEventListener("scroll", () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(resetTilts, 100); // Debounce for performance
+            });
+
+            // --- Innovative Click Animation: Ripple + Sparkle Burst ---
+            const buttons = document.querySelectorAll('.ripple');
+            buttons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    // Sparkle burst: Create 5-10 small sparkles
+                    const burstCount = Math.floor(Math.random() * 5) + 5;
+                    for (let i = 0; i < burstCount; i++) {
+                        const sparkle = document.createElement('div');
+                        sparkle.classList.add('sparkle');
+                        const angle = Math.random() * 360;
+                        const distance = Math.random() * 20 + 10; // 10-30px away
+                        sparkle.style.left = `${e.offsetX + Math.cos(angle) * distance}px`;
+                        sparkle.style.top = `${e.offsetY + Math.sin(angle) * distance}px`;
+                        sparkle.style.background = `hsl(${Math.random() * 360}, 100%, 80%)`; // Random color
+                        button.appendChild(sparkle);
+                        setTimeout(() => sparkle.remove(), 500); // Remove after animation
+                    }
                 });
             });
 
