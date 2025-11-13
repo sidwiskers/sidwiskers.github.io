@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LastLife | Creator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* General Body and Theming */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #05020a;
+            color: #e5e5e5;
+            overflow-x: hidden;
+        }
+
+        /* Interactive Particle Canvas */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Animated Gradient for Text */
+        .animated-gradient-text {
+            background: linear-gradient(90deg, #9333ea, #3b82f6, #06b6d4, #9333ea);
+            background-size: 300% 300%;
+            animation: gradient-flow 10s ease infinite;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Glassmorphism Card Style with Enhanced 3D Tilt and Glow */
+        .glass-card {
+            background: rgba(17, 13, 29, 0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease-out;
+            will-change: transform, box-shadow;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-card:hover {
+            box-shadow: 0 8px 40px rgba(147, 51, 234, 0.3);
+        }
+
+        /* Enhanced Entrance Animations with Scale and Blur */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px) scale(0.95); filter: blur(5px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+
+        .fade-in-down {
+            opacity: 0;
+            animation: fadeInDown 1s ease-out forwards;
+        }
+        .delay-1 { animation-delay: 0.3s; }
+        .delay-2 { animation-delay: 0.6s; }
+
+        /* Enhanced Scroll Reveal Animations with Bounce */
+        .reveal {
+            position: relative;
+            opacity: 0;
+            transform: translateY(100px) scale(0.95);
+            transition: opacity 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Button Pulse Animation */
+        .pulse-button {
+            animation: pulse 2s infinite ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(147, 51, 234, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(147, 51, 234, 0); }
+        }
+
+        /* Innovative Ripple Effect on Click */
+        .ripple:active::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.6);
+            opacity: 0;
+            border-radius: 50%;
+            transform: scale(1) translate(-50%, -50%);
+            animation: ripple-effect 0.6s linear;
+        }
+
+        @keyframes ripple-effect {
+            to {
+                transform: scale(100) translate(-50%, -50%);
+                opacity: 0;
+            }
+        }
+
+        /* Quick Sparkle Burst on Click (Innovative Addition) */
+        @keyframes sparkle-burst {
+            0% { opacity: 1; transform: scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: scale(1.5) rotate(180deg); }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkle-burst 0.5s ease-out forwards;
+        }
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- The interactive particle background will be rendered here -->
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="relative min-h-screen w-full p-4 sm:p-6 lg:p-8 flex flex-col items-center justify-center">
+        
+        <!-- Main Content Wrapper -->
+        <div class="w-full max-w-5xl mx-auto">
+            <!-- Header Section -->
+            <header class="text-center pt-20 pb-12">
+                <h1 id="name-title" class="text-6xl md:text-8xl font-black tracking-tighter mb-4 opacity-0">
+                    LastLife
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 font-light fade-in-down delay-1">
+                Curious Human  <span class="text-cyan-400 mx-2">
+                </p>
+            </header>
+
+            <!-- Bio Section -->
+            <section class="max-w-3xl text-center my-8 mx-auto fade-in-down delay-2">
+                 <p class="text-lg text-gray-400 leading-relaxed">
+                    Bunch of Telegram Bots and Games with a few Services
+                </p>
+            </section>
+
+            <!-- Projects Section -->
+            <main class="w-full mx-auto my-16">
+                <h2 class="text-3xl font-bold text-center mb-12 reveal">My Creations</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Project Card 1: Fryday -->
+                    <div class="glass-card rounded-2xl p-6 flex flex-col items-center text-center reveal" data-tilt>
+                        <div class="p-4 bg-pink-900/50 rounded-full mb-4 transform-gpu" style="transform: translateZ(40px);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="text-pink-300" viewBox="0 0 16 16"><path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM4.5 5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7zm0 2.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7zm0 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">Fryday</h3>
+                        <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">Human alike Chatbot, you may like her</p>
+                        <a href="https://t.me/frydayybot?start" target="_blank" class="w-full text-center font-semibold bg-pink-500 text-black py-2 rounded-lg hover:bg-pink-400 transition-colors transform-gpu pulse-button ripple" style="transform: translateZ(10px);">Chat Now</a>
+                    </div>
+
+                    <!-- Project Card 2: Switch Glitch -->
+                    <div class="glass-card rounded-2xl p-6 flex flex-col items-center text-center reveal" data-tilt>
+                        <div class="p-4 bg-indigo-900/50 rounded-full mb-4 transform-gpu" style="transform: translateZ(40px);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="text-indigo-300" viewBox="0 0 16 16"><path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm5.5 1a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zM4 10.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zM4 5.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">SwitchGlitch</h3>
+                        <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);"> Just a "match the block" Game </p>
+                        <a href="https://t.me/SwitchGlitchxBot?start" target="_blank" class="w-full text-center font-semibold bg-indigo-500 text-white py-2 rounded-lg hover:bg-indigo-400 transition-colors transform-gpu pulse-button ripple" style="transform: translateZ(10px);">Play Game</a>
+                    </div>
+
+                    <!-- Project Card 3: The Insider -->
+                    <div class="glass-card rounded-2xl p-6 flex flex-col items-center text-center reveal" data-tilt>
+                        <div class="p-4 bg-teal-900/50 rounded-full mb-4 transform-gpu" style="transform: translateZ(40px);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="text-teal-300" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">TheInsider</h3>
+                        <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">A "Who's the spy" type game </p>
+                        <a href="https://t.me/TheInsidereBot?start" target="_blank" class="w-full text-center font-semibold bg-teal-500 text-white py-2 rounded-lg hover:bg-teal-400 transition-colors transform-gpu pulse-button ripple" style="transform: translateZ(10px);">Uncover Spy</a>
+                    </div>
+
+                    <!-- Project Card 4: MineSweeper -->
+                    <div class="glass-card rounded-2xl p-6 flex flex-col items-center text-center reveal" data-tilt>
+                        <div class="p-4 bg-green-900/50 rounded-full mb-4 transform-gpu" style="transform: translateZ(40px);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="text-green-300" viewBox="0 0 16 16"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"/><path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">MineSweeper</h3>
+                        <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">A minimal quick MineSweeper game</p>
+                        <a href="https://t.me/MinesSweepBot?start" target="_blank" class="w-full text-center font-semibold bg-green-500 text-black py-2 rounded-lg hover:bg-green-400 transition-colors transform-gpu pulse-button ripple" style="transform: translateZ(10px);">Play Game</a>
+                    </div>
+
+                    <!-- Project Card 5: The Sentinel -->
+                    <div class="glass-card rounded-2xl p-6 flex flex-col items-center text-center reveal" data-tilt>
+                        <div class="p-4 bg-red-900/50 rounded-full mb-4 transform-gpu" style="transform: translateZ(40px);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="text-red-300" viewBox="0 0 16 16"><path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">Sentinel</h3>
+                        <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">Telegram Moderation Bot</p>
+                        <a href="https://t.me/PaceSetterxBot?start" target="_blank" class="w-full text-center font-semibold bg-red-500 text-black py-2 rounded-lg hover:bg-red-400 transition-colors transform-gpu pulse-button ripple" style="transform: translateZ(10px);">Add to Group</a>
+                    </div>
+
+                    <!-- Project Card 6: Byte -->
+                    <div class="glass-card rounded-2xl p-6 flex flex-col items-center text-center reveal" data-tilt>
+                        <div class="p-4 bg-yellow-900/50 rounded-full mb-4 transform-gpu" style="transform: translateZ(40px);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="text-yellow-300" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zM4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">Byte</h3>
+                        <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">My personal Sidekick, quite Introverted to reply</p>
+                        <a href="https://t.me/ByternBot?start" target="_blank" class="w-full text-center font-semibold bg-yellow-500 text-black py-2 rounded-lg hover:bg-yellow-400 transition-colors transform-gpu pulse-button ripple" style="transform: translateZ(10px);">Chat Now</a>
+                    </div>
+
+                    <!-- Project Card 7: Snatcher -->
+                    <div class="glass-card rounded-2xl p-6 flex flex-col items-center text-center reveal md:col-span-3" data-tilt>
+                         <div class="p-4 bg-violet-900/50 rounded-full mb-4 transform-gpu" style="transform: translateZ(40px);">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="text-violet-300" viewBox="0 0 16 16"><path d="M4.5 3.5a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm2-2a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0V2a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0V2a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v13a.5.5 0 0 1-1 0V2a.5.5 0 0 1 .5-.5zm2.5.5a.5.5 0 0 0-1 0v9a.5.5 0 0 0 1 0V4z"/><path d="M2 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm-1 9a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2 transform-gpu" style="transform: translateZ(30px);">Snatcher</h3>
+                        <p class="text-gray-400 mb-4 flex-grow transform-gpu" style="transform: translateZ(20px);">A web utility to instantly extract sticker IDs from Telegram sticker packs in Batch</p>
+                        <a href="http://snatcher-v2-j1xd.vercel.app" target="_blank" class="w-full max-w-xs text-center font-semibold bg-violet-500 text-white py-2 rounded-lg hover:bg-violet-400 transition-colors transform-gpu pulse-button ripple" style="transform: translateZ(10px);">Visit Tool</a>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Contact Section -->
+            <footer class="text-center mt-16 mb-8 reveal">
+                <h3 class="text-2xl font-bold mb-4">Let's Connect</h3>
+                <p class="text-gray-400 mb-6 max-w-md mx-auto">Have an idea, a question, or just want to say hello? Reach out on Telegram.</p>
+                <a href="https://t.me/sidwiskers" target="_blank" class="inline-block bg-gradient-to-r from-purple-600 to-blue-500 text-white font-bold text-lg px-8 py-4 rounded-lg shadow-lg hover:shadow-blue-500/40 transition-all duration-300 transform hover:scale-105 pulse-button ripple">
+                    Message LastLife
+                </a>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- Enhanced Interactive Particle Background: More particles, smoother connections, color variation ---
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let mouse = { x: null, y: null, radius: 120 };
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            window.addEventListener('mousemove', (event) => { mouse.x = event.x; mouse.y = event.y; });
+            window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
+
+            class Particle {
+                constructor(x, y, dX, dY, size, color) {
+                    this.x = x; this.y = y; this.directionX = dX; this.directionY = dY; this.size = size; this.color = color;
+                    this.baseColor = color;
+                }
+                draw() {
+                    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false); ctx.fillStyle = this.color; ctx.fill();
+                }
+                update() {
+                    if (this.x > canvas.width || this.x < 0) { this.directionX = -this.directionX; }
+                    if (this.y > canvas.height || this.y < 0) { this.directionY = -this.directionY; }
+                    let dx = mouse.x - this.x; let dy = mouse.y - this.y; let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius + this.size) {
+                        if (mouse.x < this.x && this.x < canvas.width - this.size * 10) { this.x += 4; }
+                        if (mouse.x > this.x && this.x > this.size * 10) { this.x -= 4; }
+                        if (mouse.y < this.y && this.y < canvas.height - this.size * 10) { this.y += 4; }
+                        if (mouse.y > this.y && this.y > this.size * 10) { this.y -= 4; }
+                        this.color = 'rgba(59, 130, 246, 0.6)';
+                    } else {
+                        this.color = this.baseColor;
+                    }
+                    this.x += this.directionX; this.y += this.directionY; this.draw();
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                let num = (canvas.height * canvas.width) / 6000;
+                for (let i = 0; i < num; i++) {
+                    let size = (Math.random() * 3) + 1;
+                    let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                    let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                    let dX = (Math.random() * 0.6) - 0.3;
+                    let dY = (Math.random() * 0.6) - 0.3;
+                    let color = `rgba(${Math.floor(Math.random() * 100 + 100)}, 51, 234, 0.4)`;
+                    particles.push(new Particle(x, y, dX, dY, size, color));
+                }
+            }
+
+            function animateParticles() {
+                requestAnimationFrame(animateParticles); ctx.clearRect(0, 0, innerWidth, innerHeight);
+                for (let i = 0; i < particles.length; i++) { particles[i].update(); }
+                connectParticles();
+            }
+            
+            function connectParticles() {
+                let opacity = 1;
+                for (let a = 0; a < particles.length; a++) {
+                    for (let b = a; b < particles.length; b++) {
+                        let distance = ((particles[a].x - particles[b].x) * (particles[a].x - particles[b].x)) + ((particles[a].y - particles[b].y) * (particles[a].y - particles[b].y));
+                        if (distance < (canvas.width / 6) * (canvas.height / 6)) {
+                            opacity = 1 - (distance / 15000);
+                            ctx.strokeStyle = `rgba(147, 51, 234, ${opacity * 0.4})`; ctx.lineWidth = 1.5;
+                            ctx.beginPath(); ctx.moveTo(particles[a].x, particles[a].y); ctx.lineTo(particles[b].x, particles[b].y); ctx.stroke();
+                        }
+                    }
+                }
+            }
+            initParticles(); animateParticles();
+
+            // --- Enhanced Name Scramble/Reveal Animation: Slower scramble, more characters, smoother transition ---
+            const nameTitle = document.getElementById('name-title'); const originalText = nameTitle.textContent;
+            const chars = '!<>-_\\/[]{}—=+*^?#_@&%';
+            let frame; let frameRequest; let queue = [];
+            for (let i = 0; i < originalText.length; i++) {
+                const from = originalText[i]; const to = originalText[i]; const start = Math.floor(Math.random() * 60);
+                const end = start + Math.floor(Math.random() * 60); queue.push({ from, to, start, end, char: from });
+            }
+            nameTitle.textContent = ''; nameTitle.style.opacity = 1;
+            const updateName = () => {
+                let output = ''; let complete = 0;
+                for (let i = 0, n = queue.length; i < n; i++) {
+                    let { from, to, start, end, char } = queue[i];
+                    if (frame >= end) { complete++; output += to; } 
+                    else if (frame >= start) {
+                        if (!char || Math.random() < 0.2) {
+                            char = chars[Math.floor(Math.random() * chars.length)]; queue[i].char = char;
+                        }
+                        output += `<span class="animated-gradient-text">${char}</span>`;
+                    } else { output += from; }
+                }
+                nameTitle.innerHTML = output;
+                if (complete === queue.length) { 
+                    cancelAnimationFrame(frameRequest); 
+                    nameTitle.innerHTML = `<span class="animated-gradient-text">${originalText}</span>`;
+                    nameTitle.style.animation = 'bounceIn 0.5s ease-out';
+                } else { 
+                    frameRequest = requestAnimationFrame(updateName); frame++; 
+                }
+            };
+            setTimeout(() => { frame = 0; updateName(); }, 200);
+
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes bounceIn {
+                    0% { transform: scale(0.9); }
+                    50% { transform: scale(1.05); }
+                    100% { transform: scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+
+            const tiltElements = document.querySelectorAll("[data-tilt]");
+            const tiltConfig = { max: 20, perspective: 1200, scale: 1.08, speed: 600, easing: "cubic-bezier(.03,.98,.52,.99)" };
+
+            tiltElements.forEach(element => {
+                element.addEventListener("mousemove", (e) => {
+                    const rect = element.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const { width, height } = rect;
+                    const rotateX = tiltConfig.max * ((y - height / 2) / (height / 2)) * -1;
+                    const rotateY = tiltConfig.max * ((x - width / 2) / (width / 2));
+                    
+                    element.style.transition = `transform ${tiltConfig.speed / 2}ms linear`;
+                    element.style.transform = `perspective(${tiltConfig.perspective}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(${tiltConfig.scale}, ${tiltConfig.scale}, ${tiltConfig.scale})`;
+                    
+                    const innerElements = element.querySelectorAll('.transform-gpu');
+                    innerElements.forEach(inner => {
+                        const depth = parseInt(inner.style.transform.match(/translateZ\((\d+)px\)/)?.[1] || 0);
+                        inner.style.transform = `translateZ(${depth}px) translate(${rotateY / 2}px, ${rotateX / 2}px)`;
+                    });
+                });
+
+                element.addEventListener("mouseleave", () => {
+                    element.style.transition = `transform ${tiltConfig.speed}ms ${tiltConfig.easing}`;
+                    element.style.transform = `perspective(${tiltConfig.perspective}px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                    
+                    const innerElements = element.querySelectorAll('.transform-gpu');
+                    innerElements.forEach(inner => {
+                        const depth = parseInt(inner.style.transform.match(/translateZ\((\d+)px\)/)?.[1] || 0);
+                        inner.style.transform = `translateZ(${depth}px) translate(0px, 0px)`;
+                    });
+                });
+            });
+
+            function resetTilts() {
+                tiltElements.forEach(element => {
+                    element.style.transition = `transform ${tiltConfig.speed}ms ${tiltConfig.easing}`;
+                    element.style.transform = `perspective(${tiltConfig.perspective}px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                    
+                    const innerElements = element.querySelectorAll('.transform-gpu');
+                    innerElements.forEach(inner => {
+                        const depth = parseInt(inner.style.transform.match(/translateZ\((\d+)px\)/)?.[1] || 0);
+                        inner.style.transform = `translateZ(${depth}px) translate(0px, 0px)`;
+                    });
+                });
+            }
+
+            let scrollTimeout;
+            window.addEventListener("scroll", () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(resetTilts, 100);
+            });
+
+            const buttons = document.querySelectorAll('.ripple');
+            buttons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const burstCount = Math.floor(Math.random() * 5) + 5;
+                    for (let i = 0; i < burstCount; i++) {
+                        const sparkle = document.createElement('div');
+                        sparkle.classList.add('sparkle');
+                        const angle = Math.random() * 360;
+                        const distance = Math.random() * 20 + 10;
+                        sparkle.style.left = `${e.offsetX + Math.cos(angle) * distance}px`;
+                        sparkle.style.top = `${e.offsetY + Math.sin(angle) * distance}px`;
+                        sparkle.style.background = `hsl(${Math.random() * 360}, 100%, 80%)`;
+                        button.appendChild(sparkle);
+                        setTimeout(() => sparkle.remove(), 500);
+                    }
+                });
+            });
+
+            function reveal() {
+                const reveals = document.querySelectorAll(".reveal");
+                for (let i = 0; i < reveals.length; i++) {
+                    const windowHeight = window.innerHeight;
+                    const elementTop = reveals[i].getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    if (elementTop < windowHeight - elementVisible) {
+                        reveals[i].classList.add("active");
+                    }
+                }
+            }
+            let timeout;
+            window.addEventListener("scroll", () => {
+                clearTimeout(timeout);
+                timeout = setTimeout(reveal, 50);
+            });
+            reveal();
+        });
+    </script>
+</body>
+</html>
